@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   width: 480px;
   margin: 0 auto;
@@ -11,8 +15,34 @@ body {
 ul {
   margin: 0 auto;
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   list-style: none;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: justify;
+  margin-bottom: 64px;
+  border-bottom: 3px solid black;
+}
+
+ul img {
+  width: 129px;
+  box-shadow: -10px -10px 20px #6b6d75;
+}
+
+ul li {
+  margin-left: -40px;
+}
+.description {
+  display: block;
+  margin: 0 auto;
+  border: blanchedalmond 1px solid;
+  padding: 24px;
+  background-color: cornsilk;
+  box-shadow: -10px -10px 20px #6b6d75;
+  width: 100%;
+  margin: 32px auto;
 }
