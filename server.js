@@ -11,7 +11,6 @@ const PORT = process.env.PORT;
 // const DATABASE_URL = process.env.DATABASE_URL;
 // const client = new pg.Client(DATABASE_URL);
 // client.on('error', error => console.log('There was an error like dudh', error));
-const booksArray = [];
 
 app.use(express.static('./public')); // serve all the files in the specified folder
 app.use(express.urlencoded({extended: true})); // tells express to peel off form data and put it into request.body
@@ -25,7 +24,7 @@ app.get('/test', (req, res) => {
 
 app.get('/searches/new', (req, res) => {
   console.log(req.query);
-  res.render('./pages/searches/show.ejs');
+  res.render('./pages/searches/new.ejs');
 });
 
 app.post('/searches', (req, res) => {

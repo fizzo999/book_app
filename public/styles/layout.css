@@ -1,0 +1,96 @@
+#centerForm {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  width: 550px;
+  margin: 0 auto;
+  height: 100vh;
+  background-color: rgba(75, 73, 72, 0.378);
+}
+
+h2 {
+  font-size: 36px;
+  background-color: black;
+  width: 100%;
+  color: white;
+  text-align: left;
+  padding: 24px;
+}
+
+h3 {
+  font-size: 20px;
+  background-color: #555;
+  text-align: center;
+  width: 100%;
+  padding: 24px 0;
+  color: white;
+}
+#bookSearch {
+  text-align: center;
+}
+#bookSearch fieldset {
+  margin: 0 auto;
+  font-size: 1.2rem;
+  padding: 16px;
+}
+
+#bookSearch label {
+  font-size: 1.2rem;
+  align-self: left;
+}
+
+#bookSearch input[type=text] {
+  display: block;
+  height: 50px;
+  width: 450px;
+  padding: 40px 30px;
+  margin: 24px;
+  font-size: 20px;
+  /* background-color: #d6d6d6; */
+  background-color: red;
+  color: black;
+  /* font-weight: 300; */
+  border-radius: 5px;
+}
+
+#bookSearch label {
+  display: inline-block;
+  padding: 3px;
+  font-size: 20px;
+  background-color: #d6d6d6;
+  color: black;
+  font-weight: 300;
+  text-align: left;
+}
+
+#bookSearch input[type=radio] {
+  display: inline-block;
+  padding: 0;
+  width: 12px;
+  height: 12px;
+  font-size: 8px;
+  scale: 0.1;
+
+}
+
+#bookSearch input:last-of-type {
+  height: 60px;
+  width: 450px;
+  /* padding: 40px 30px; */
+  font-size: 20px;
+  line-height: 0px;
+  background-color: black;
+  color: white;
+  font-weight: 300;
+}
+
+#radioButtonDiv1,
+#radioButtonDiv2 {
+  height: 80px;
+  width: 450px;
+  /* padding: 40px 30px; */
+  background-color: #d6d6d6;
+  border: 1px solid #333;
+  margin: 24px auto;
+}

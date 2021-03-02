@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./styles/base.css">
+  <link rel="stylesheet" href="./styles/modules.css">
   <title>Search for Google Books</title>
 </head>
 <body>
@@ -14,16 +14,11 @@
       <ul>
         <li><img src="<%= bookSearchArray[i].img %>" alt=""></li>  
         <li><h3 class="title"><%= bookSearchArray[i].title %></h3></li>  
-        <li><p class="author"><%= bookSearchArray[i].authors %></p></li>  
+        <li><p class="authors"><%= bookSearchArray[i].authors %></p></li>  
         <li><p class="description"><%= bookSearchArray[i].description %></p></li>  
         <li><p class="pubDate"><%= bookSearchArray[i].pubDate %></p></li>  
       </ul>
   </div>
-  <%  } %>
-
-
-
-
-  
+  <%  } %>  
 </body>
 </html>
