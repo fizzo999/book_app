@@ -74,5 +74,19 @@ Start time: 6:30AM
 Finish time: 8:00AM
 Actual time needed to complete: 1.5 HOUR
 
+#### Date 03-02-2021
+Number and name of feature: implementing new file tree
+Estimate of time needed to complete: 1 HOUR
+Start time: 3:00PM
+Finish time: 4:00PM
+Actual time needed to complete: 1 HOUR
+
+#### Date 03-02-2021
+Number and name of feature: implement GET and POST and SQL
+Estimate of time needed to complete: 3 HOUR
+Start time: 4:30AM
+Finish time: 11:00AM
+Actual time needed to complete: 7 HOUR
 
 
+heroku pg:push __local-db__ DATABASE_URL --app __app-name__

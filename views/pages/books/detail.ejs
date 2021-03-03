@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/modules.css">
+  <title>Search for Google Books</title>
+</head>
+<body>
+  <h1>SO THIS IS THE DETAILS VIEW</h1>
+  <div class="searchResultsDiv">
+      <ul>
+        <li><img src="<%= bookSearchArray.img %>" alt=""></li>  
+        <li><h3 class="title"><%= bookSearchArray.title %></h3></li>  
+        <li><h3 class="authors"><%= bookSearchArray.authors %></h3></li>  
+        <li><p class="description"><%= bookSearchArray.book_description %></p></li>  
+        <li><p class="pubDate"><%= bookSearchArray.pubDate %></p></li>
+        <li><p class="isbn"><%= bookSearchArray.isbn %></p></li>
+      </ul>
+  </div>
+</body>
+</html>
