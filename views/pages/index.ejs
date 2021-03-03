@@ -4,11 +4,31 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./styles/base.css">
-  <title>Document</title>
+  <!-- <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/modules.css"> -->
+  <title>Search Books</title>
 </head>
 <body>
-  <h1>HELLO FIZZO - I LOVE YOU</h1>
-  
+  <h1>Hello Fizzo - you did it and I love you</h1>
+  <div id="centerForm">
+    <h2>Best Books!</h2>
+    <h3>currently you have <%= bookSearchArray.length %> books in your database</h3>
+  </div>
+  <h2>Search Results</h2>
+  <div class="searchResultsDiv">
+    <% for (let i=0; i< bookSearchArray.length; i++) { %>
+      <ul>
+        <li><img src="<%= bookSearchArray[i].image_url %>" alt=""></li>  
+        <li><h3 class="title"><%= bookSearchArray[i].title %></h3></li>  
+        <li><h3 class="authors"><%= bookSearchArray[i].authors %></h3></li>  
+        <li><p class="description"><%= bookSearchArray[i].book_description %></p></li>  
+        <li><p class="pubDate"><%= bookSearchArray[i].pubDate %></p></li>
+        <li><p class="isbn"><%= bookSearchArray[i].isbn %></p></li>
+      </ul>
+  </div>
+  <%  } %>  
 </body>
 </html>
+

@@ -15,8 +15,9 @@
         <li><img src="<%= bookSearchArray[i].img %>" alt=""></li>  
         <li><h3 class="title"><%= bookSearchArray[i].title %></h3></li>  
         <li><h3 class="authors"><%= bookSearchArray[i].authors %></h3></li>  
-        <li><p class="description"><%= bookSearchArray[i].description %></p></li>  
-        <li><h3 class="h3ubDate"><%= bookSearchArray[i].pubDate %></p></li>
+        <li><p class="description"><%= bookSearchArray[i].book_description %></p></li>  
+        <li><p class="pubDate"><%= bookSearchArray[i].pubDate %></p></li>
+        <li><p class="isbn"><%= bookSearchArray[i].isbn %></p></li>
       </ul>
   </div>
   <%  } %>  

@@ -2,25 +2,42 @@
 // ============== Packages ==============================
 const express = require('express');
 const superagent = require('superagent');
-// const pg = require('pg');
+const pg = require('pg');
 require('dotenv').config();
 
 // ============== App ===================================
 const app = express();
 const PORT = process.env.PORT;
-// const DATABASE_URL = process.env.DATABASE_URL;
-// const client = new pg.Client(DATABASE_URL);
-// client.on('error', error => console.log('There was an error like dudh', error));
+const DATABASE_URL = process.env.DATABASE_URL || 3111;
+const client = new pg.Client(DATABASE_URL);
+client.on('error', error => console.log('There was an error like dudh', error));
+
+app.set('view engine', 'ejs');
 
 app.use(express.static('./public')); // serve all the files in the specified folder
 app.use(express.urlencoded({extended: true})); // tells express to peel off form data and put it into request.body
 app.use(express.static(__dirname + '/public'));
-app.set('view engine', 'ejs');
 
 // ============== Routes ================================
 app.get('/test', (req, res) => {
   res.render('./pages/index.ejs');
 });
+
+app.get('/', handleGettingBooksSql);
+
+function handleGettingBooksSql (req, res) {
+  console.log(req.query);
+  const sqlString = 'SELECT * FROM book_table;';
+  client.query(sqlString)
+    .then (result => {
+      console.log('here is the database rows', result.rows);
+      const sqlObject = { bookSearchArray: result.rows};
+      res.render('./pages/index.ejs', sqlObject);
+    });
+}
+
+
+
 
 app.get('/searches/new', (req, res) => {
   console.log(req.query);
@@ -46,18 +63,18 @@ app.post('/searches', (req, res) => {
 });
 
 function Books(booksFromGoogle) {
-  this.img = booksFromGoogle.volumeInfo.imageLinks ? booksFromGoogle.volumeInfo.imageLinks.smallThumbnail : "https://i.imgur.com/J5LVHEL.jpg";
-  this.title = booksFromGoogle.volumeInfo.title;
   this.authors = booksFromGoogle.volumeInfo.authors;
-  // this.isbn = booksFromGoogle.volumeInfo.industryIdentifiers ? booksFromGoogle.volumeInfo.industryIdentifiers[1].type + booksFromGoogle.volumeInfo.industryIdentifiers[1].identifier : 'no ISBN number';
-  this.description = booksFromGoogle.volumeInfo.description;
+  this.title = booksFromGoogle.volumeInfo.title;
+  this.isbn = booksFromGoogle.volumeInfo.industryIdentifiers ? booksFromGoogle.volumeInfo.industryIdentifiers[1].type + booksFromGoogle.volumeInfo.industryIdentifiers[1].identifier : 'no ISBN number';
+  this.image_url = booksFromGoogle.volumeInfo.imageLinks ? booksFromGoogle.volumeInfo.imageLinks.smallThumbnail : "https://i.imgur.com/J5LVHEL.jpg";
+  this.book_description = booksFromGoogle.volumeInfo.description;
   this.pubDate = booksFromGoogle.volumeInfo.publishedDate;
 }
 
 
 // ============== Initialization ========================
-// client.connect()
-// .then(() => {
+client.connect()
+.then(() => {
 app.listen(PORT, () => console.log(`up on http://localhost:${PORT}`));
-// });
+});
 

@@ -75,4 +75,4 @@ Finish time: 8:00AM
 Actual time needed to complete: 1.5 HOUR
 
 
-
+heroku pg:push __local-db__ DATABASE_URL --app __app-name__
