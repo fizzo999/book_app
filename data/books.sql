@@ -9,5 +9,5 @@ CREATE TABLE book_table (
   isbn NUMERIC(13),
   image_url VARCHAR(255),
   book_description TEXT,
-  pubDate TEXT
+  pubDate DATE
 );
