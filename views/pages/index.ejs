@@ -17,6 +17,7 @@
     <h3>currently you have <%= bookSearchArray.length %> books in your database</h3>
   </div>
   <h2>Search Results</h2>
+  <a href="/searches/new"><button>Click here to start a new book search</button></a>
   <div class="searchResultsDiv">
     <% for (let i=0; i< bookSearchArray.length; i++) { %>
       <ul>
@@ -32,6 +33,7 @@
       </ul>
   </div>
   <%  } %>  
+
 </body>
 </html>
 
