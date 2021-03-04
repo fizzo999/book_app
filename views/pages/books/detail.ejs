@@ -8,23 +8,47 @@
   <title>Search for Google Books</title>
 </head>
 <body>
-  <h1>SO THIS IS THE DETAILS VIEW</h1>
-  <div class="searchResultsDiv">
+  <header>
+    <h1>SO THIS IS THE DETAILS VIEW</h1>
+    <nav class="navigation">
       <ul>
-        <li>
-          <img src="<%= bookSearchArray.image_url %>" alt="">  
-          <h3 class="title"><%= bookSearchArray.title %></h3>  
-          <h3 class="authors"><%= bookSearchArray.authors %></h3>  
-          <p class="description"><%= bookSearchArray.book_description %></p>  
-          <h3 class="pubDate"><%= bookSearchArray.pubDate %></h3>
-          <h3 class="isbn"><%= bookSearchArray.isbn %></h3>
-          
-
-
-
-          <a href=""> <button>save this book to your collection</button> </a>
-       </li>
+        <li><a href="/"> <button>return to your saved list</button> </a></li>
+        <li><a href="/searches/new"><button>go to new search</button> </a></li>
       </ul>
-  </div>
+    </nav>
+  </header>
+  <main>
+    <div class="searchResultsDiv">
+        <ul>
+          <li>
+            <img src="<%= bookSearchArray.image_url %>" alt="">  
+            <h3 class="title"><%= bookSearchArray.title %></h3>  
+            <h3 class="authors"><%= bookSearchArray.authors %></h3>  
+            <p class="description"><%= bookSearchArray.book_description %></p>  
+            <h3 class="pubDate"><%= bookSearchArray.pub_date %></h3>
+            <h3 class="isbn"><%= bookSearchArray.isbn %></h3>
+            <!-- <a href=""> <button>save this book to your collection</button> </a> -->
+
+            <h2 class="view-title">Update Book Entry</h2>
+            <form action="/update/<%= bookSearchArray.id %>?_method=PUT" method="post">
+              <input type="text" name="title" value="<%= bookSearchArray.title %>" placeholder="<%= bookSearchArray.title %>">
+              <input type="text" name="authors" value="<%= bookSearchArray.authors %>" placeholder="<%= bookSearchArray.authors %>">
+              <input type="text" name="book_description" value="<%= bookSearchArray.book_description %>" placeholder="<%= bookSearchArray.book_description %>">
+
+              <input type="text" name="pub_date" value="<%= bookSearchArray.pub_date %>" placeholder="<%= bookSearchArray.pub_date %>">
+
+              <input type="text" name="isbn" value="<%= bookSearchArray.isbn %>" placeholder="<%= bookSearchArray.isbn %>">
+              <input type="hidden" name="image_url" value="<%= bookSearchArray.image_url %>" placeholder="<%= bookSearchArray.image_url %>">
+              <button type="submit" id="updateButton" >Update This Task</button>
+            </form>
+            <h2 class="deleteBook">Delete Book</h2>
+            <form action="/books/<%= bookSearchArray.id %>?_method=DELETE" method="post">
+              <button type="submit">Delete This Task</button>
+            </form>
+          </li>
+        </ul>
+    </div>
+  </main>
+  <!-- <script src="../../../public/js/app.js"></script> -->
 </body>
 </html>

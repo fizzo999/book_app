@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/styles/reset.css">
   <link rel="stylesheet" href="/styles/base.css">
-  <!-- <link rel="stylesheet" href="/styles/layout.css">
-  <link rel="stylesheet" href="/styles/modules.css"> -->
+  <link rel="stylesheet" href="/styles/layout.css">
+  <!-- <link rel="stylesheet" href="/styles/modules.css"> -->
   <title>Search Books</title>
 </head>
 <body>
@@ -26,7 +26,7 @@
           <h3 class="title"><%= bookSearchArray[i].title %></h3>  
           <h3 class="authors"><%= bookSearchArray[i].authors %></h3>  
           <p class="description"><%= bookSearchArray[i].book_description %></p>  
-          <!-- <p class="pubDate"><%= bookSearchArray[i].pubDate %></p> -->
+          <p class="pubDate"><%= bookSearchArray[i].pub_date %></p>
           <p class="isbn"><%= bookSearchArray[i].isbn %></p>
           <a href="/books/<%= bookSearchArray[i].id %>"><button>details</button></a>
         </li>
