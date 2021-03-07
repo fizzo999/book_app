@@ -30,16 +30,34 @@ app.get('/searches/new', (req, res) => {
   res.render('pages/searches/new.ejs');
 });
 app.post('/searches', googleBookRequest);
-app.get('/books/:id', getSingleBook);
 app.post('/books', saveSingleBook);
+app.get('/books/:id', getSingleBook);
 
 app.put('/update/:id', updateBookInfo);
 app.delete('/books/:id', deleteBook);
 
+app.get('/books/detail-view/:id', redirectToUpdateBook)
+
 // =========== functions ============
 
+function redirectToUpdateBook(req, res) {
+  // res.render('pages/books/detail-new.ejs');
+  const sqlString = 'SELECT * FROM book_table WHERE id = $1;';
+  const sqlArray = [req.params.id]; //params gives you the parameter of what was in the url/
+  client.query(sqlString, sqlArray)
+    .then (result => {
+      const ejsObject = { bookSearchArray: result.rows[0]};
+      // console.log('', result.rows[0]);
+      res.render('./pages/books/detail-new.ejs', ejsObject);
+    })
+    .catch(errorThatComesBack => {
+      console.log(errorThatComesBack);
+      res.status(500).send('Sorry something went wrong with books GETTING FROM DB');
+    });
+}
+
 function updateBookInfo(req, res) {
-  console.log('==================================================================================', req.body.pub_date);
+  // console.log('==================================================================================', req.body.pub_date);
   let sqlString4 = `UPDATE book_table SET authors=$1, title=$2, isbn=$3, image_url=$4, book_description=$5, pub_date=$6 WHERE id=$7;`;
   let sqlArray4 = [req.body.authors, req.body.title, req.body.isbn, req.body.image_url, req.body.book_description, req.body.pub_date, req.params.id];
   // console.log(sqlArray4);
@@ -71,8 +89,9 @@ function deleteBook (req, res) {
 
 
 function saveSingleBook (req, res) {
-  const sqlString2 = `INSERT INTO book_table (authors, title, isbn, image_url, book_description, pub_date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
-  console.log(sqlString2);
+  // future to do - check if book already in db - if not save - if yes - redirect to detail page - message already in your collection
+  const sqlString2 = `INSERT INTO book_table (authors, title, isbn, image_url, book_description, pub_date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;`;
+  // console.log(sqlString2);
   const sqlArray2 = [req.body.authors, req.body.title, req.body.isbn, req.body.image_url, req.body.book_description, req.body.pub_date];
   client.query(sqlString2, sqlArray2)
     .then(results => {
@@ -93,7 +112,7 @@ function getSingleBook (req, res) {
   client.query(sqlString, sqlArray)
     .then (result => {
       const ejsObject = { bookSearchArray: result.rows[0]};
-      console.log('', result.rows[0]);
+      // console.log('', result.rows[0]);
       res.render('./pages/books/detail.ejs', ejsObject);
     })
     .catch(errorThatComesBack => {
@@ -116,7 +135,8 @@ function getBooksSql (req, res) {
 }
 
 function handleTest(req, res) {
-  res.render('./pages/index.ejs');
+  // res.render('./pages/index.ejs');
+  res.send('The test is working - you are awesome - keep going');
 }
 
 function googleBookRequest(req, res) {
@@ -136,12 +156,12 @@ function googleBookRequest(req, res) {
 }
 
 function Books(bookObj) {
-  this.authors = bookObj.volumeInfo.authors;
-  this.title = bookObj.volumeInfo.title;
-  this.isbn = bookObj.volumeInfo.industryIdentifiers[1] ? bookObj.volumeInfo.industryIdentifiers[1].type + bookObj.volumeInfo.industryIdentifiers[1].identifier : 'no ISBN number';
+  this.authors = bookObj.volumeInfo.authors ? bookObj.volumeInfo.authors : 'sorry no authors for this item';
+  this.title = bookObj.volumeInfo.title ? bookObj.volumeInfo.title : 'sorry no title for this item';
+  this.isbn = bookObj.volumeInfo.industryIdentifiers[1] ? bookObj.volumeInfo.industryIdentifiers[1].type + ': ' + bookObj.volumeInfo.industryIdentifiers[1].identifier : 'no ISBN number';
   this.image_url = bookObj.volumeInfo.imageLinks ? bookObj.volumeInfo.imageLinks.smallThumbnail.replace(/^http:\/\//i, 'https://') : 'https://i.imgur.com/J5LVHEL.jpg';
-  this.book_description = bookObj.volumeInfo.description;
-  this.pub_date = bookObj.volumeInfo.publishedDate;
+  this.book_description = bookObj.volumeInfo.description ? bookObj.volumeInfo.description : 'sorry no description for this item';
+  this.pub_date = bookObj.volumeInfo.publishedDate ? bookObj.volumeInfo.publishedDate : 'sorry no publishing date for this item';
 }
 
 // ============== Initialization ========================

@@ -112,4 +112,12 @@ Start time: 4:30PM
 Finish time: 10:30PM
 Actual time needed to complete: 6 HOUR
 
+#### Date 03-06-2021
+
+Number and name of feature: add route to update books - finish styling every single page - test run
+Estimate of time needed to complete: 4+ HOUR
+Start time: 9:00AM
+Finish time: 4:30PM - Lunch BREAK
+Actual time needed to complete: 6 HOUR
+
 heroku pg:push **local-db** DATABASE_URL --app **app-name**

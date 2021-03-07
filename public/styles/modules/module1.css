@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 550px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #888;
+}
+
+#newSearchPage h2 {
+  width: 550px;
+}
+
+#centerForm {
+  height: 100vh;
+  width: 100%;
+}
+
+#bookSearch {
+  text-align: center;
+}
+#bookSearch fieldset {
+  margin: 0 auto;
+}
+
+#bookSearch label {
+}
+
+#bookSearch input[type="text"] {
+  display: block;
+  height: 50px;
+  width: 450px;
+  padding: 40px 30px;
+  margin: 24px;
+  font-size: 24px;
+  background-color: #d6d6d6;
+  color: black;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#bookSearch label {
+  font-size: 20px;
+  background-color: #d6d6d6;
+  color: black;
+  text-align: left;
+}
+
+#bookSearch input[type="radio"] {
+  height: 15px !important;
+  width: 15px !important;
+}
+
+#bookSearch input:last-of-type {
+  height: 60px;
+  width: 450px;
+  padding: 40px 30px;
+  font-size: 24px;
+  line-height: 0px;
+  background-color: black;
+  color: white;
+  font-weight: 300;
+}
+
+#radioButtonDiv1,
+#radioButtonDiv2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: 450px;
+  padding: 40px 30px;
+  background-color: #d6d6d6;
+  border: 1px solid #333;
+  margin: 24px auto;
+}
