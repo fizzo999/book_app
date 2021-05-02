@@ -2,33 +2,23 @@
 // ============== Packages ==============================
 const express = require('express');
 const superagent = require('superagent');
-const cors = require('cors');
-
-
-// const pg = require('pg');
-
+const pg = require('pg');
 const methodOverride = require('method-override');
 require('dotenv').config();
-const base64 = require('base-64');
 
 // ============== App ===================================
 // database setup
 const DATABASE_URL = process.env.DATABASE_URL;
-// const client = new pg.Client(DATABASE_URL);
-// client.on('error', error => console.log('There was an error like dudh', error));
+const client = new pg.Client(DATABASE_URL);
+client.on('error', error => console.log('There was an error like dudh', error));
 // Application Setup
 const app = express();
 const PORT = process.env.PORT || 3232;
-
-// --------------------------------
-const tokenArray = [];
-// --------------------------------
 
 // Application Middleware
 app.use(express.urlencoded({extended: true})); // tells express to peel off form data and put it into request.body
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
-app.use(cors());
 
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
@@ -36,19 +26,6 @@ app.set('view engine', 'ejs');
 // ============== Routes ================================
 app.get('/test', handleTest);
 app.get('/', getBooksSql);
-
-// new for signup/signin================================
-app.get('/signUp/new', (req, res) => {
-  res.render('pages/credentials/signup.ejs');
-});
-app.post('/signUp', handlesignUp);
-
-app.get('/signIn/new', (req, res) => {
-  res.render('pages/credentials/signin.ejs');
-});
-app.post('/signIn', handlesignIn);
-// ========================================================
-
 app.get('/searches/new', (req, res) => {
   res.render('pages/searches/new.ejs');
 });
@@ -62,47 +39,6 @@ app.delete('/books/:id', deleteBook);
 app.get('/books/detail-view/:id', redirectToUpdateBook);
 
 // =========== functions ============
-
-function handlesignUp(req, res) {
-  console.log('HERE IS THE REQ.BODY===================================', req.body);
-  // this is where we would switch out the URL for localhost to heroku deployed link
-  let url = `http://localhost:3333/signup`;
-  superagent.post(url, req.body)
-    .then(data => {
-      const userDataThatComesBack = data.body;
-      console.log('HERE IT IS ==========================================', userDataThatComesBack);
-      res.render('pages/credentials/showUsers.ejs', {userDataThatComesBack});
-      // res.redirect('pages/searches/show.ejs');
-    })
-    .catch(errorThatComesBack => {
-      console.log(errorThatComesBack);
-      res.status(500).send('Sorry something went wrong with THE SIGN UP');
-    });
-}
-function handlesignIn(req, res) {
-  let un = req.body.username; //because it is a POST method data shows up in req.body
-  let pw = req.body.password;
-  let strg = `${un}:${pw}`;
-  let encoded = base64.encode(strg);
-  // console.log(base64.decode(encoded));
-  // req.headers.authorization = encoded;
-  let url = `http://localhost:3333/signin`;
-  // superagent.post(url, req)
-  superagent.post(url)
-  .set('authorization', `Basic ${encoded}`)
-  // .set('authorization', `bearer ${YELP_API_KEY}`)
-    .then(data => {
-      console.log(data.body);
-      tokenArray.push({ username: data.body.username, token: data.body.token, role: data.body.role});
-      console.log('heree is the token Array - HURRAY HURRAY', tokenArray);
-      const userDataThatComesBack = data.body;
-      res.render('pages/credentials/showUsers.ejs', {userDataThatComesBack});
-    })
-    .catch(errorThatComesBack => {
-      console.log(errorThatComesBack.message);
-      res.status(500).send('Sorry something went wrong with sending the authorization headers');
-    });
-}
 
 function redirectToUpdateBook(req, res) {
   // res.render('pages/books/detail-new.ejs');
@@ -229,10 +165,9 @@ function Books(bookObj) {
 }
 
 // ============== Initialization ========================
-// client.connect()
-//   .then(() => {
-    app.listen(PORT, () => console.log(`up on http://localhost:${PORT}`))
-  // })
-  // .catch(errorThatComesBack => {
-  //   console.log(errorThatComesBack);
-  // });
+client.connect()
+  .then(() => {
+    app.listen(PORT, () => console.log(`up on http://localhost:${PORT}`));
+  }).catch(errorThatComesBack => {
+    console.log(errorThatComesBack);
+  });
