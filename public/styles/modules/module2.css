@@ -8,7 +8,46 @@ header h2 {
   font-size: 24px;
   font-weight: lighter;
 }
-body#SearchResultsPage {
+
+#UserSignupPage header {
+  width: 600px;
+  text-align: center;
+}
+
+body#UserSignupPage header h3 {
+  color: yellow;
+  font-size: 20px;
+}
+
+body#UserSignupPage header h2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: lighter;
+  font-size: 24px;
+  background-color: rgba(61, 61, 61, 0.912);
+  text-align: center;
+}
+
+body#UserSignupPage header button {
+  width: 200px;
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+  margin: 24px 25px 24px 25px;
+  text-align: center;
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+}
+
+body#UserSignupPage header button:hover {
+  color: yellow !important;
+  background-color: rgba(255, 255, 255, 0.118);
+  /* border: 3px rgba(177, 176, 176, 0.275) solid !important; */
+  -webkit-text-stroke: 1px rgba(172, 171, 149, 0.1);
+  text-shadow: 1px 1px 9px black;
+}
+
+body#SearchResultsPage,
+body#UserSignupPage {
   height: 100%;
   min-height: 100vh;
   width: 600px;
@@ -72,6 +111,10 @@ ul li h3 {
   color: white;
   font-size: 20px;
   padding: 0 24px;
+}
+body#UserSignupPage h3 {
+  color: black;
+  line-height: 140%;
 }
 
 ul li h4.authors {

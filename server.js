@@ -4,8 +4,7 @@ const express = require('express');
 const superagent = require('superagent');
 const cors = require('cors');
 
-
-// const pg = require('pg');
+const pg = require('pg');
 
 const methodOverride = require('method-override');
 require('dotenv').config();
@@ -14,13 +13,15 @@ const base64 = require('base-64');
 // ============== App ===================================
 // database setup
 const DATABASE_URL = process.env.DATABASE_URL;
-// const client = new pg.Client(DATABASE_URL);
-// client.on('error', error => console.log('There was an error like dudh', error));
+const client = new pg.Client(DATABASE_URL);
+client.on('error', error => console.log('There was an error like dudh', error));
+
 // Application Setup
 const app = express();
 const PORT = process.env.PORT || 3232;
 
 // --------------------------------
+let sqlObject = {};
 const tokenArray = [];
 // --------------------------------
 
@@ -35,7 +36,6 @@ app.set('view engine', 'ejs');
 
 // ============== Routes ================================
 app.get('/test', handleTest);
-app.get('/', getBooksSql);
 
 // new for signup/signin================================
 app.get('/signUp/new', (req, res) => {
@@ -47,8 +47,14 @@ app.get('/signIn/new', (req, res) => {
   res.render('pages/credentials/signin.ejs');
 });
 app.post('/signIn', handlesignIn);
+
+app.get('/aboutUs', (req, res) => {
+  res.render('pages/aboutUs.ejs');
+})
+
 // ========================================================
 
+app.get('/', getBooksSql);
 app.get('/searches/new', (req, res) => {
   res.render('pages/searches/new.ejs');
 });
@@ -57,9 +63,13 @@ app.post('/books', saveSingleBook);
 app.get('/books/:id', getSingleBook);
 
 app.put('/update/:id', updateBookInfo);
-app.delete('/books/:id', deleteBook);
+// app.delete('/books/:id', MIDDLEWARE FUNCTION HERE TO CHECK ROLE , deleteBook);
+app.delete('/books/:id', frontendMiddlewareFunction('admin'), deleteBook);
 
 app.get('/books/detail-view/:id', redirectToUpdateBook);
+app.get('/books/successfullyDeleted', (req, res) => {
+  res.render('pages/books/successfullyDeleted.ejs');
+});
 
 // =========== functions ============
 
@@ -71,7 +81,7 @@ function handlesignUp(req, res) {
     .then(data => {
       const userDataThatComesBack = data.body;
       console.log('HERE IT IS ==========================================', userDataThatComesBack);
-      res.render('pages/credentials/showUsers.ejs', {userDataThatComesBack});
+      res.render('pages/credentials/showUserSignup.ejs', {userDataThatComesBack}, );
       // res.redirect('pages/searches/show.ejs');
     })
     .catch(errorThatComesBack => {
@@ -87,14 +97,14 @@ function handlesignIn(req, res) {
   // console.log(base64.decode(encoded));
   // req.headers.authorization = encoded;
   let url = `http://localhost:3333/signin`;
-  // superagent.post(url, req)
   superagent.post(url)
   .set('authorization', `Basic ${encoded}`)
   // .set('authorization', `bearer ${YELP_API_KEY}`)
     .then(data => {
       console.log(data.body);
+      tokenArray.pop();
       tokenArray.push({ username: data.body.username, token: data.body.token, role: data.body.role});
-      console.log('heree is the token Array - HURRAY HURRAY', tokenArray);
+      console.log('here is the token Array - HURRAY HURRAY', tokenArray);
       const userDataThatComesBack = data.body;
       res.render('pages/credentials/showUsers.ejs', {userDataThatComesBack});
     })
@@ -104,6 +114,25 @@ function handlesignIn(req, res) {
     });
 }
 
+function frontendMiddlewareFunction (role) {
+  return (req, res, next) => {
+    try {
+      // check if token is there, check if token is the same as the one we need
+      console.log('HAHA SO YOU ARE A ===============================', tokenArray);
+      if(tokenArray.length === 0) {
+        next('Please sign in first');
+      } else if(tokenArray[0].role === role){
+        next();
+      } else {
+        next('Insufficient access credentials for this operation - please contact the admin');
+      }
+    } catch(e) {
+      next(e.message);
+    }
+  };
+}
+
+// ==========================================================================
 function redirectToUpdateBook(req, res) {
   // res.render('pages/books/detail-new.ejs');
   const sqlString = 'SELECT * FROM book_table WHERE id = $1;';
@@ -121,15 +150,12 @@ function redirectToUpdateBook(req, res) {
 }
 
 function updateBookInfo(req, res) {
-  // console.log('==================================================================================', req.body.pub_date);
   let sqlString4 = `UPDATE book_table SET authors=$1, title=$2, isbn=$3, image_url=$4, book_description=$5, pub_date=$6 WHERE id=$7;`;
   let sqlArray4 = [req.body.authors, req.body.title, req.body.isbn, req.body.image_url, req.body.book_description, req.body.pub_date, req.params.id];
-  // console.log(sqlArray4);
   client.query(sqlString4, sqlArray4)
     .then(results => {
       res.redirect(`/books/${req.params.id}`);
     })
-    // .then(res.redirect('/books'))
     .catch(errorThatComesBack => {
       console.log(errorThatComesBack);
       res.status(500).send('Sorry something went wrong with books UPDATE ');
@@ -141,9 +167,8 @@ function deleteBook (req, res) {
   let sqlArray3 = [req.params.id];
   client.query(sqlString3, sqlArray3)
     .then(results => {
-      res.redirect('/');
+      res.render('pages/books/successfullyDeleted.ejs');
     })
-    // .then(res.redirect('/books'))
     .catch(errorThatComesBack => {
       console.log(errorThatComesBack);
       res.status(500).send('Sorry something went wrong with books DELETE ');
@@ -189,7 +214,7 @@ function getBooksSql (req, res) {
   const sqlString = 'SELECT * FROM book_table;';
   client.query(sqlString)
     .then (result => {
-      const sqlObject = { bookSearchArray: result.rows};
+      sqlObject = { bookSearchArray: result.rows};
       res.render('./pages/index.ejs', sqlObject);
     })
     .catch(errorThatComesBack => {
@@ -229,10 +254,10 @@ function Books(bookObj) {
 }
 
 // ============== Initialization ========================
-// client.connect()
-//   .then(() => {
+client.connect()
+  .then(() => {
     app.listen(PORT, () => console.log(`up on http://localhost:${PORT}`))
-  // })
-  // .catch(errorThatComesBack => {
-  //   console.log(errorThatComesBack);
-  // });
+  })
+  .catch(errorThatComesBack => {
+    console.log(errorThatComesBack);
+  });
