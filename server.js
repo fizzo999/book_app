@@ -71,6 +71,19 @@ app.get('/books/successfullyDeleted', (req, res) => {
   res.render('pages/books/successfullyDeleted.ejs');
 });
 
+
+
+
+app.use('*', (req, res) => {
+  let errorObj = {error: 'wrong route', username: tokenArray.username}
+  res.status(500).render('pages/error.ejs', { errorObj: errorObj });
+})
+
+app.use((err, req, res) => {
+  let errorObj = {error: err.message, username: tokenArray.username}
+  res.status(500).render('pages/error.ejs', { errorObj: errorObj });
+})
+
 // =========== functions ============
 
 function handlesignUp(req, res) {
@@ -128,6 +141,7 @@ function frontendMiddlewareFunction (role) {
       }
     } catch(e) {
       next(e.message);
+
     }
   };
 }
@@ -171,7 +185,8 @@ function deleteBook (req, res) {
     })
     .catch(errorThatComesBack => {
       console.log(errorThatComesBack);
-      res.status(500).send('Sorry something went wrong with books DELETE ');
+      // res.status(500).send('Sorry something went wrong with books DELETE ');
+      res.status(500).render('pages/error.ejs', errorThatComesBack.message);
     });
 }
 
@@ -252,6 +267,19 @@ function Books(bookObj) {
   this.book_description = bookObj.volumeInfo.description ? bookObj.volumeInfo.description : 'sorry no description for this item';
   this.pub_date = bookObj.volumeInfo.publishedDate ? bookObj.volumeInfo.publishedDate : 'sorry no publishing date for this item';
 }
+
+
+// ============== Error Catch Alls ======================
+
+app.use('*', (req, res) => {
+  let errorObj = {error: 'wrong route', username: tokenArray.username}
+  res.status(500).render('pages/error.ejs', { errorObj: errorObj });
+})
+
+app.use((err, req, res) => {
+  let errorObj = {error: err.message, username: tokenArray.username}
+  res.status(500).render('pages/error.ejs', { errorObj: errorObj });
+})
 
 // ============== Initialization ========================
 client.connect()
